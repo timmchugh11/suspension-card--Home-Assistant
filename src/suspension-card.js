@@ -76,6 +76,7 @@ const CARD_STYLE = `
     --sus-text-dim: var(--disabled-text-color);
     --sus-accent: var(--accent-color);
     --sus-pressure: var(--primary-color);
+    --sus-pressure-fill: color-mix(in srgb, var(--sus-pressure), var(--sus-text-muted) 55%);
     --sus-action: var(--accent-color);
     --sus-ok: var(--state-binary_sensor-on-color, var(--success-color, #7fa66a));
     border: 1px solid var(--sus-border);
@@ -133,8 +134,8 @@ const CARD_STYLE = `
   }
   .gauge-fill {
     position: absolute; left: 0; right: 0; bottom: 0; height: 0%;
-    background: linear-gradient(to top, color-mix(in srgb, var(--sus-pressure), black 30%), color-mix(in srgb, var(--sus-pressure), white 5%));
-    border-top: 2px solid color-mix(in srgb, var(--sus-pressure), white 20%); box-shadow: inset 0 0 16px rgba(255,255,255,0.05);
+    background: linear-gradient(to top, color-mix(in srgb, var(--sus-pressure-fill), black 22%), color-mix(in srgb, var(--sus-pressure-fill), white 8%));
+    border-top: 2px solid color-mix(in srgb, var(--sus-pressure-fill), white 18%); box-shadow: inset 0 0 16px rgba(255,255,255,0.05);
     transition: height .5s cubic-bezier(.4,0,.2,1);
   }
   .gauge-value { position: relative; z-index: 1; text-align: center; text-shadow: 0 2px 10px rgba(0,0,0,0.75); }
