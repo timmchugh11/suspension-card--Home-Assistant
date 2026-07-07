@@ -67,97 +67,116 @@ function normalizeConfig(config) {
 const CARD_STYLE = `
   :host { display: block; }
   ha-card {
-    --ha-card-border-width: 0;
-    --ha-card-background: transparent;
-    --ha-card-box-shadow: none;
-    border: none; background: transparent; box-shadow: none; overflow: visible;
+    --sus-card-bg: var(--ha-card-background, var(--card-background-color));
+    --sus-panel-bg: color-mix(in srgb, var(--sus-card-bg), white 4%);
+    --sus-panel-bg-soft: color-mix(in srgb, var(--sus-card-bg), white 7%);
+    --sus-border: var(--divider-color);
+    --sus-border-soft: color-mix(in srgb, var(--divider-color), transparent 35%);
+    --sus-text: var(--primary-text-color);
+    --sus-text-muted: var(--secondary-text-color);
+    --sus-text-dim: var(--disabled-text-color);
+    --sus-accent: var(--accent-color);
+    --sus-pressure: var(--primary-color);
+    --sus-action: var(--accent-color);
+    --sus-ok: var(--state-binary_sensor-on-color, var(--success-color, #7fa66a));
+    border: 1px solid var(--sus-border);
+    border-radius: var(--ha-card-border-radius, 12px);
+    background: var(--sus-card-bg);
+    box-shadow: var(--ha-card-box-shadow, none);
+    color: var(--sus-text);
+    overflow: hidden;
   }
   .level-card {
     position: relative;
     container-type: inline-size;
     overflow: hidden;
     border-radius: var(--ha-card-border-radius, 12px);
-    background:
-      radial-gradient(circle at 50% 40%, rgba(255,255,255,0.05), transparent 38%),
-      linear-gradient(145deg, #1c1c1c, #121212);
-    border: 1px solid rgba(255,255,255,0.12);
-    color: #f2f2f2;
+    background: var(--sus-card-bg);
+    color: var(--sus-text);
     font-family: var(--paper-font-body1_-_font-family, system-ui, -apple-system, "Segoe UI", sans-serif);
     padding: 18px;
   }
   .top-tabs { display: flex; gap: 12px; justify-content: center; margin-bottom: 16px; }
   .tab {
     flex: 1; max-width: 260px; min-height: 52px; border-radius: 15px;
-    border: 1px solid rgba(255,255,255,0.12);
-    background: linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.02));
-    color: #e8e8e8; display: flex; align-items: center; justify-content: center; gap: 10px;
+    border: 1px solid var(--sus-border-soft);
+    background: var(--sus-panel-bg-soft);
+    color: var(--sus-text); display: flex; align-items: center; justify-content: center; gap: 10px;
     font-size: 16px; font-weight: 650; cursor: pointer; user-select: none;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); transition: all .15s ease;
+    box-shadow: none; transition: all .15s ease;
   }
   .tab svg { width: 22px; height: 22px; opacity: .75; }
+  .tab[data-preset="level"] {
+    color: var(--sus-action); border-color: color-mix(in srgb, var(--sus-action), transparent 62%);
+    background: color-mix(in srgb, var(--sus-action), transparent 84%);
+    box-shadow: none;
+  }
   .tab.active {
-    color: #ffc400; border-color: rgba(255,196,0,.42);
-    background: linear-gradient(180deg, rgba(255,196,0,.22), rgba(255,196,0,.09));
-    box-shadow: 0 0 22px rgba(255,196,0,.08), inset 0 1px 0 rgba(255,255,255,0.05);
+    color: var(--sus-action); border-color: color-mix(in srgb, var(--sus-action), transparent 62%);
+    background: color-mix(in srgb, var(--sus-action), transparent 84%);
+    box-shadow: none;
   }
   .main-layout { display: grid; grid-template-columns: minmax(116px, 150px) minmax(0, 1fr) minmax(116px, 150px); gap: 16px; align-items: stretch; }
 
   /* Airbag pressure: full-height vertical progress bar with the psi centred. */
   .air-card {
-    border: 1px solid rgba(255,255,255,0.12); border-radius: 20px;
-    background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.015));
+    border: 1px solid var(--sus-border-soft); border-radius: 20px;
+    background: var(--sus-panel-bg);
+    box-shadow: none;
     padding: 16px 12px; display: flex; flex-direction: column; gap: 12px; min-width: 0;
   }
-  .air-title { font-size: 14px; font-weight: 720; letter-spacing: 0.09em; text-align: center; }
+  .air-title { font-size: 14px; font-weight: 720; letter-spacing: 0.09em; text-align: center; color: var(--sus-text-muted); }
   .gauge {
     position: relative; flex: 1; min-height: 150px; width: 100%;
-    border: 1px solid rgba(255,255,255,0.16); border-radius: 16px; overflow: hidden;
-    background: rgba(0,0,0,0.28); box-shadow: inset 0 0 22px rgba(0,0,0,0.4);
+    border: 1px solid var(--sus-border-soft); border-radius: 16px; overflow: hidden;
+    background: color-mix(in srgb, var(--sus-panel-bg), black 12%); box-shadow: inset 0 0 16px rgba(255,255,255,0.05);
     display: grid; place-items: center;
   }
   .gauge-fill {
     position: absolute; left: 0; right: 0; bottom: 0; height: 0%;
-    background: linear-gradient(180deg, rgba(52,169,255,0.30), rgba(52,169,255,0.68));
-    border-top: 2px solid #7cd0ff; box-shadow: 0 -2px 26px rgba(52,169,255,0.45);
+    background: linear-gradient(to top, color-mix(in srgb, var(--sus-pressure), black 30%), color-mix(in srgb, var(--sus-pressure), white 5%));
+    border-top: 2px solid color-mix(in srgb, var(--sus-pressure), white 20%); box-shadow: inset 0 0 16px rgba(255,255,255,0.05);
     transition: height .5s cubic-bezier(.4,0,.2,1);
   }
   .gauge-value { position: relative; z-index: 1; text-align: center; text-shadow: 0 2px 10px rgba(0,0,0,0.75); }
-  .gauge-psi { font-size: 32px; font-weight: 400; letter-spacing: -0.03em; line-height: 1; }
-  .gauge-psi span { font-size: 15px; margin-left: 3px; color: #dfefff; }
+  .gauge-psi { font-size: 32px; font-weight: 400; letter-spacing: -0.03em; line-height: 1; color: var(--sus-text); }
+  .gauge-psi span { font-size: 15px; margin-left: 3px; color: var(--sus-text-muted); }
   .manual-buttons { width: 100%; display: grid; gap: 10px; }
   .small-btn {
-    border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.025); color: #efefef;
+    border: 1px solid var(--sus-border-soft); background: var(--sus-panel-bg-soft); color: var(--sus-text);
     height: 46px; border-radius: 13px; display: flex; align-items: center; justify-content: center; gap: 12px;
     font-size: 15px; cursor: pointer; user-select: none; -webkit-user-select: none; touch-action: none;
     transition: background .12s ease, border-color .12s ease;
   }
-  .small-btn:active, .small-btn.active { background: rgba(52,169,255,0.16); border-color: rgba(52,169,255,0.5); }
-  .small-btn .chev { width: 18px; height: 18px; color: #34a9ff; flex: 0 0 auto; }
+  .small-btn:active, .small-btn.active { background: color-mix(in srgb, var(--sus-pressure), transparent 88%); border-color: color-mix(in srgb, var(--sus-pressure), transparent 62%); }
+  .small-btn .chev { width: 18px; height: 18px; color: color-mix(in srgb, var(--sus-pressure), white 20%); flex: 0 0 auto; }
 
   /* Centre: pitch (top) and roll (bottom) stacked, filling the same height as
      the side gauges; each shows the van image tilting to the live angle. */
   .center { min-width: 0; display: flex; flex-direction: column; gap: 16px; }
   .tilt-panel {
     position: relative; flex: 1; min-height: 120px;
-    border: 1px solid rgba(255,255,255,0.10); border-radius: 18px;
-    background: rgba(0,0,0,0.14);
+    border: 1px solid var(--sus-border-soft); border-radius: 18px;
+    background: var(--sus-panel-bg);
+    box-shadow: none;
     display: grid; grid-template-columns: minmax(74px, auto) 1fr; align-items: center; gap: 12px;
     padding: 12px 18px; overflow: hidden;
   }
   .tilt-head { min-width: 0; }
-  .tilt-label { font-size: 12px; letter-spacing: .08em; color: #aaa; margin-bottom: 4px; }
-  .tilt-value { font-size: 32px; font-weight: 330; letter-spacing: -0.05em; line-height: 1; cursor: pointer; }
-  .tilt-dir { color: #888; font-size: 12px; margin-top: 6px; white-space: nowrap; }
+  .tilt-label { font-size: 12px; letter-spacing: .08em; color: var(--sus-text-muted); margin-bottom: 4px; }
+  .tilt-value { font-size: 32px; font-weight: 330; letter-spacing: -0.05em; line-height: 1; cursor: pointer; color: var(--sus-text); }
+  .tilt-dir { color: var(--sus-text-dim); font-size: 12px; margin-top: 6px; white-space: nowrap; }
   .tilt-stage { position: relative; height: 100%; display: grid; place-items: center; min-width: 0; }
   .tilt-img {
     max-width: 86%; max-height: 128px; object-fit: contain;
-    filter: drop-shadow(0 8px 12px rgba(0,0,0,0.45));
+    opacity: 0.85;
+    filter: brightness(0.9) contrast(0.95) drop-shadow(0 8px 12px rgba(0,0,0,0.45));
     transform-origin: 50% 78%;
     transition: transform .5s cubic-bezier(.34,1.2,.5,1);
   }
   .tilt-ground {
     position: absolute; left: 8%; right: 8%; bottom: 14%; height: 1px;
-    background: rgba(255,255,255,0.12);
+    background: var(--sus-border-soft);
   }
 
   /* Scale down as the card's own width shrinks (container queries). */
@@ -631,4 +650,4 @@ window.customCards.push({
   documentationURL: "https://github.com/timmchugh11/suspension-card--Home-Assistant",
 });
 
-console.info("%c SUSPENSION-CARD %c v0.2.0 ", "color:#fff;background:#34a9ff;border-radius:3px 0 0 3px;padding:2px 4px", "color:#34a9ff;background:#222;border-radius:0 3px 3px 0;padding:2px 4px");
+console.info("SUSPENSION-CARD v0.2.0");
