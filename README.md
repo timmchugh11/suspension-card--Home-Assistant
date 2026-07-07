@@ -75,7 +75,7 @@ button_mode: hold                       # "hold" (momentary) or "toggle"
 | `entity_pressure_left` / `entity_pressure_right` | — | Airbag pressure sensors (psi). |
 | `pressure_max_psi` | `100` | Pressure that fills a bar to 100%. |
 | `pressure_decimals` | `1` | Decimal places for the psi readout. |
-| `entity_drive_preset` / `entity_level_preset` | — | `input_boolean`, `switch`, or `automation` preset entities; the two tabs are mutually exclusive. |
+| `entity_drive_preset` / `entity_level_preset` | — | `input_boolean` or `switch` preset entities; the two tabs are mutually exclusive. |
 | `entity_inflate_left` … `entity_deflate_right` | — | Switches for each manual valve. |
 | `button_mode` | `hold` | `hold` = valve open while pressed; `toggle` = tap on/off. |
 

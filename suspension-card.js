@@ -382,11 +382,22 @@ class SuspensionCard extends HTMLElement {
     this._hass?.callService(domain, service, { entity_id: entityId });
   }
 
+  _togglePreset(entityId) {
+    if (!entityId) return;
+    const domain = entityId.split(".")[0];
+    if (domain === "automation") {
+      const state = this._hass?.states?.[entityId]?.state;
+      this._svc(entityId, state === "on" ? "turn_off" : "turn_on");
+      return;
+    }
+    this._svc(entityId, "toggle");
+  }
+
   _onPreset(which) {
     const target = which === "drive" ? this.config.entity_drive_preset : this.config.entity_level_preset;
     const other = which === "drive" ? this.config.entity_level_preset : this.config.entity_drive_preset;
     if (other) this._svc(other, "turn_off");
-    if (target) this._svc(target, "toggle");
+    this._togglePreset(target);
   }
 
   _moreInfo(entityId) {
@@ -464,7 +475,9 @@ class SuspensionCard extends HTMLElement {
   _setTabActive(which, entityId) {
     const tab = Array.from(this._el.tabs).find((t) => t.dataset.preset === which);
     if (!tab) return;
-    const on = entityId && this._hass?.states?.[entityId]?.state === "on";
+    const domain = entityId?.split(".")[0];
+    const hasPresetState = domain === "input_boolean" || domain === "switch";
+    const on = hasPresetState && this._hass?.states?.[entityId]?.state === "on";
     tab.classList.toggle("active", Boolean(on));
   }
 
@@ -531,7 +544,6 @@ class SuspensionCardEditor extends HTMLElement {
       s: this._entitiesByDomain("sensor").length,
       b: this._entitiesByDomain("input_boolean").length,
       w: this._entitiesByDomain("switch").length,
-      a: this._entitiesByDomain("automation").length,
     });
   }
 
@@ -611,8 +623,8 @@ class SuspensionCardEditor extends HTMLElement {
         </div>
 
         <div class="section-title">Presets</div>
-        ${this._select("entity_drive_preset", "Driving Preset", ["input_boolean", "switch", "automation"], "Select preset entity")}
-        ${this._select("entity_level_preset", "Auto Level", ["input_boolean", "switch", "automation"], "Select preset entity")}
+        ${this._select("entity_drive_preset", "Driving Preset", ["input_boolean", "switch"], "Select preset entity")}
+        ${this._select("entity_level_preset", "Auto Level", ["input_boolean", "switch"], "Select preset entity")}
 
         <div class="section-title">Manual air controls</div>
         ${this._select("entity_inflate_left", "Rear-left Inflate", "switch", "Select switch")}
