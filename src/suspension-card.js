@@ -76,7 +76,7 @@ const CARD_STYLE = `
     --sus-text-dim: var(--disabled-text-color);
     --sus-accent: var(--accent-color);
     --sus-pressure: var(--primary-color);
-    --sus-pressure-fill: color-mix(in srgb, var(--sus-pressure), var(--sus-text-muted) 55%);
+    --sus-pressure-fill: #ff9800;
     --sus-action: var(--accent-color);
     --sus-ok: var(--state-binary_sensor-on-color, var(--success-color, #7fa66a));
     border: 1px solid var(--sus-border);
