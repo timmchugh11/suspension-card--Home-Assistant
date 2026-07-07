@@ -1,0 +1,9 @@
+logs/
+*.bak
+backup/
+*.png
+!img/**/*.png
+!img/*.png
+# local dev harness
+*.test.html
+node_modules/

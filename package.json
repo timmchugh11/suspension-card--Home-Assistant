@@ -1,0 +1,9 @@
+{
+  "name": "suspension-card",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Home Assistant Lovelace custom card for air suspension: live 3D van tilt, airbag pressures, presets and manual inflate/deflate.",
+  "scripts": {
+    "build": "node build.mjs"
+  }
+}
