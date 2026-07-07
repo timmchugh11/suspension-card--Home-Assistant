@@ -106,11 +106,6 @@ const CARD_STYLE = `
     box-shadow: none; transition: all .15s ease;
   }
   .tab svg { width: 22px; height: 22px; opacity: .75; }
-  .tab[data-preset="level"] {
-    color: var(--sus-action); border-color: color-mix(in srgb, var(--sus-action), transparent 62%);
-    background: color-mix(in srgb, var(--sus-action), transparent 84%);
-    box-shadow: none;
-  }
   .tab.active {
     color: var(--sus-action); border-color: color-mix(in srgb, var(--sus-action), transparent 62%);
     background: color-mix(in srgb, var(--sus-action), transparent 84%);
